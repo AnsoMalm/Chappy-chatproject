@@ -1,0 +1,30 @@
+{
+	"users": [
+		{ 
+			"id": "a1", 
+			"username": "VänligaVera", 
+			"password": "password1"
+		},
+		{ 
+			"id": "a2", 
+			"username": "PratagladPelle", 
+			"password": "password2"
+		},
+		{ 
+			"id": "a3", 
+			"username": "SocialaSara", 
+			"password": "password3"
+		},
+		{ 
+			"id": "a4", 
+			"username": "TrevligaTommy", 
+			"password": "password4"
+		},
+		{ 
+			"id": "a5", 
+			"username": "GladaGustav", 
+			"password": "password5"
+		}
+	]
+
+}
