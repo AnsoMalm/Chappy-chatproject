@@ -1,12 +1,12 @@
 import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
-import publicRouter from './routes/public.js'
+import publicRouter from './routes/users.js'
 
 
 const app = express()
 dotenv.config()
-const port = 5253
+const port = process.env.PORT || 5050
 
 app.use( cors())
 app.use( express.json() )
@@ -15,7 +15,8 @@ app.use((req, res, next) => {
 	next()
 })
 
-app.use('api/public', publicRouter)
+//routes
+app.use('/users', publicRouter)
 
 
 app.listen(port, () => {
