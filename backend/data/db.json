@@ -1,70 +1,63 @@
 {
-	"users": [
-		{ 
-			"id": 1, 
-			"username": "VänligaVera", 
-			"password": "password1"
-		},
-		{ 
-			"id": 2, 
-			"username": "PratagladPelle", 
-			"password": "password2"
-		},
-		{ 
-			"id": 3, 
-			"username": "SocialaSara", 
-			"password": "password3"
-		},
-		{ 
-			"id": 4, 
-			"username": "TrevligaTommy", 
-			"password": "password4"
-		},
-		{ 
-			"id": 5, 
-			"username": "GladaGustav", 
-			"password": "password5"
-		}
-	],
-	"message": [
-		{
-			"id": 110,
-			"text": "Hej på dej!"
-		},
-		{
-			"id": 111,
-			"text": "Tjabba!"
-		},
-		{
-			"id": 112,
-			"text": "Hej! Hur mår du idag?"
-		},
-		{
-			"id": 113,
-			"text": "Tjeeeena bengan!"
-		}
-	],
-	"Chanel": [
-		{
-			"id": "Room1",
-			"chanelName": "#koda"
-		},
-		{
-			"id": "Room2",
-			"chanelName": "#random"
-		},
-		{
-			"id": "Room3",
-			"chanelName": "#grupp1"
-		},
-		{
-			"id": "Room4",
-			"chanelName": "#grupp2"
-		},
-		{
-			"id": "Room5",
-			"chanelName": "#grupp3"
-		}
-	]
-
+  "users": [
+    {
+      "id": 1,
+      "username": "VänligaVera",
+      "password": "password1"
+    },
+    {
+      "id": 2,
+      "username": "PratagladPelle",
+      "password": "password2"
+    },
+    {
+      "id": 3,
+      "username": "SocialaSara",
+      "password": "password3"
+    },
+    {
+      "username": "GoaHelge",
+      "password": "boaorm",
+      "id": 7618
+    }
+  ],
+  "chanels": [
+    {
+      "id": "Room1",
+      "chanelName": "#koda"
+    },
+    {
+      "id": "Room2",
+      "chanelName": "#random"
+    },
+    {
+      "id": "Room3",
+      "chanelName": "#grupp1"
+    },
+    {
+      "id": "Room4",
+      "chanelName": "#grupp2"
+    },
+    {
+      "id": "Room5",
+      "chanelName": "#grupp3"
+    }
+  ],
+  "messages": [
+    {
+      "id": 1,
+      "author": "Vera",
+      "content": "Hello!"
+    },
+    {
+      "id": 2,
+      "author": "Roliga Bengt",
+      "content": "YEEEY!!"
+    },
+    {
+      "author": "GladaConny",
+      "content": "Tja! Va gör du idag?",
+      "id": 3921
+    }
+  ]
 }
