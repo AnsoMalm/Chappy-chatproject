@@ -25,6 +25,46 @@
 			"username": "GladaGustav", 
 			"password": "password5"
 		}
+	],
+	"message": [
+		{
+			"id": 110,
+			"text": "Hej på dej!"
+		},
+		{
+			"id": 111,
+			"text": "Tjabba!"
+		},
+		{
+			"id": 112,
+			"text": "Hej! Hur mår du idag?"
+		},
+		{
+			"id": 113,
+			"text": "Tjeeeena bengan!"
+		}
+	],
+	"Chanel": [
+		{
+			"id": "Room1",
+			"chanelName": "#koda"
+		},
+		{
+			"id": "Room2",
+			"chanelName": "#random"
+		},
+		{
+			"id": "Room3",
+			"chanelName": "#grupp1"
+		},
+		{
+			"id": "Room4",
+			"chanelName": "#grupp2"
+		},
+		{
+			"id": "Room5",
+			"chanelName": "#grupp3"
+		}
 	]
 
 }

@@ -1,7 +1,8 @@
 import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
-import publicRouter from './routes/users.js'
+import userRouter from './routes/users.js'
+import messageRouter from './routes/message.js'
 
 
 const app = express()
@@ -16,7 +17,8 @@ app.use((req, res, next) => {
 })
 
 //routes
-app.use('/users', publicRouter)
+app.use('/users', userRouter)
+app.use('/message', messageRouter)
 
 
 app.listen(port, () => {
