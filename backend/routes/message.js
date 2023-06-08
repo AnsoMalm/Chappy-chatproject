@@ -10,8 +10,8 @@ const db = getDb();
 router.get('/', async (req, res) => {
 	console.log('GET all users: ');
 	await db.read();
-	let messages = db.data.message;
-	res.send(messages);
+	let allMessage = db.data.message;
+	res.send(allMessage);
   });
 
   //Hämta specifikt id från ett visst meddelande 
@@ -25,7 +25,7 @@ router.get('/:id', async (req, res) => {
 	let id = Number(req.params.id);
   
 	await db.read();
-	let mayBeMessage = db.data.messages.find(message => message.id === id);
+	let mayBeMessage = db.data.message.find(message => message.id === id);
 	if (!mayBeMessage) {
 	  res.sendStatus(404);
 	  console.log('Could not found the correct id to that text-message.. ');

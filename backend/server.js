@@ -4,11 +4,13 @@ import dotenv from 'dotenv'
 import userRouter from './routes/users.js'
 import messageRouter from './routes/message.js'
 import loginRouter from './routes/login.js'
+import { getDb } from './data/database.js'
 
 
 const app = express()
 dotenv.config()
 const port = process.env.PORT || 5050
+const secret = process.env.SECRET || "ros"
 
 app.use( cors())
 app.use( express.json() )
@@ -21,6 +23,7 @@ app.use((req, res, next) => {
 app.use('/users', userRouter)
 app.use('/message', messageRouter)
 app.use('/login', loginRouter)
+
 
 
 app.listen(port, () => {
