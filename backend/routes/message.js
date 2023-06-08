@@ -73,5 +73,25 @@ router.get('/:id', async (req, res) => {
 
   })
 
-//   router.put('/', async (req, res) => )
+  router.put('/:id', async (req, res) => {
+
+	const id = Number(req.params.id)
+	const updatedMessage = req.body
+
+	await db.read()
+	const index = db.data.messages.findIndex(message => message.id === id)
+
+	if(index === -1) {
+		res.sendStatus(404)
+		console.log('Message not found')
+		return; 
+	}
+	db.data.messages[index] = {...db.data.messages[index], ...updatedMessage}
+
+	await db.write()
+	
+	res.status(200).send(db.data.messages[index]);
+	console.log('Message updated!')
+
+  })
 export default router
