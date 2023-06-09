@@ -31,6 +31,7 @@ router.post('/', async (req, res) => {
 	if (foundUser.password !== req.body.password) {
 	  console.log('- felaktigt lösenord');
 	  res.sendStatus(401);
+	  return
 	}
 	await db.write();
 
