@@ -60,5 +60,26 @@ router.post('/', async (req, res) => {
   
 })
 
+  router.delete('/:id', async (req, res) => {
+      if( !isValidId(req.params.id) ) {
+        res.sendStatus(400)
+        console.log('Try to delete user, incorrect value...')
+        return
+      }
+      let id = Number(req.params.id)
+
+      await db.read()
+      
+      let mayBeUsers = db.data.users.find(user => user.id === id)
+      if( !mayBeUsers) {
+        res.sendStatus(404)
+        console.log('Delete user, could not found id in the user-list')
+        return
+      }
+      db.data.users = db.data.users.filter(user => user.id !== id)
+      await db.write()
+      res.sendStatus(200)
+      console.log('Correct, now is the user deleted!')
+  })
 
 export default router;

@@ -24,16 +24,6 @@
       "username": "VänligaAnna",
       "password": "password3",
       "id": 5
-    },
-    {
-      "username": "GladaAnso",
-      "password": "123",
-      "id": 6
-    },
-    {
-      "username": "GladaBert",
-      "password": "3",
-      "id": 7
     }
   ],
   "channels": [
@@ -58,7 +48,7 @@
       "chanelName": "#grupp3"
     }
   ],
-  "message": [
+  "messages": [
     {
       "id": 1,
       "author": "Vera",
@@ -68,6 +58,11 @@
       "id": 2,
       "author": "Roliga Bengt",
       "content": "YEEEY!!"
+    },
+    {
+      "author": "Jenna",
+      "content": "Hej - läget? Jag mår bra!",
+      "id": 2741
     }
   ]
 }

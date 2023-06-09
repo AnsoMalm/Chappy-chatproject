@@ -10,8 +10,8 @@ const db = getDb();
 router.get('/', async (req, res) => {
 	console.log('GET all users: ');
 	await db.read();
-	let allMessage = db.data.message;
-	res.send(allMessage);
+	let allMessages = db.data.messages;
+	res.send(allMessages);
   });
 
   //Hämta specifikt id från ett visst meddelande 
@@ -25,7 +25,7 @@ router.get('/:id', async (req, res) => {
 	let id = Number(req.params.id);
   
 	await db.read();
-	let mayBeMessage = db.data.message.find(message => message.id === id);
+	let mayBeMessage = db.data.messages.find(message => message.id === id);
 	if (!mayBeMessage) {
 	  res.sendStatus(404);
 	  console.log('Could not found the correct id to that text-message.. ');
@@ -44,7 +44,7 @@ router.get('/:id', async (req, res) => {
 	
 	await db.read()
 	addNewMessage.id = Math.floor(Math.random() * 10000)
-	db.data.message.push(addNewMessage)
+	db.data.messages.push(addNewMessage)
 	await db.write()
 	res.send({ id: addNewMessage.id})
   })
@@ -59,13 +59,13 @@ router.get('/:id', async (req, res) => {
 			return
 		}
 		await db.read()
-		const index = db.data.message.findIndex(message => message.id === id)
+		const index = db.data.messages.findIndex(message => message.id === id)
 		if(index === -1) {
 			res.sendStatus(404)
 			console.log('Delete a message - Not found')
 			return
 		}
-		db.data.message.splice(index, 1)
+		db.data.messages.splice(index, 1)
 		await db.write()
 		res.sendStatus(200)
 		console.log('Now the message is deleted!')
@@ -79,18 +79,18 @@ router.get('/:id', async (req, res) => {
 	const updatedMessage = req.body
 
 	await db.read()
-	const index = db.data.message.findIndex(message => message.id === id)
+	const index = db.data.messages.findIndex(message => message.id === id)
 
 	if(index === -1) {
 		res.sendStatus(404)
 		console.log('Message not found')
 		return; 
 	}
-	db.data.message[index] = {...db.data.message[index], ...updatedMessage}
+	db.data.messages[index] = {...db.data.messages[index], ...updatedMessage}
 
 	await db.write()
 	
-	res.status(200).send(db.data.message[index]);
+	res.status(200).send(db.data.messages[index]);
 	console.log('Message updated!')
 
   })
