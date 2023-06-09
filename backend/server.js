@@ -5,6 +5,7 @@ import userRouter from './routes/users.js'
 import messageRouter from './routes/message.js'
 import loginRouter from './routes/login.js'
 import secretRouter from './routes/secret.js'
+import channelsRouter from './routes/channels.js'
 
 
 const app = express()
@@ -13,7 +14,7 @@ const port = process.env.PORT || 5050
 
 
 app.use( cors())
-app.use( express.json() )
+app.use('/', express.json() )
 app.use((req, res, next) => {
 	console.log(`${req.method} ${req.url},`, req.body)
 	next()
@@ -24,6 +25,7 @@ app.use('/users', userRouter)
 app.use('/message', messageRouter)
 app.use('/login', loginRouter)
 app.use('/secret', secretRouter)
+app.use('/channels', channelsRouter)
 
 
 app.listen(port, () => {

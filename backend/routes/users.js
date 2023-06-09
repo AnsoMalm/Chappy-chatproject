@@ -1,6 +1,7 @@
 import express from 'express';
 import { getDb } from '../data/database.js';
-import { isValidId } from '../utils/validator.js';
+import { isValidId, isValidUser, userExists } from '../utils/validator.js';
+import { generateUserId } from '../utils/generateId.js';
 
 const router = express.Router();
 
@@ -10,7 +11,7 @@ const db = getDb();
 router.get('/', async (req, res) => {
   console.log('GET all users: ');
   await db.read();
-  let users = db.data.users;
+  let users = db.data.users
   res.send(users);
 });
 
@@ -35,14 +36,27 @@ router.get('/:id', async (req, res) => {
   console.log('Found the correct user..');
 });
 
+//Lägga till ny användare
 router.post('/', async (req, res) => {
-    let addUser = req.body
+    let mayBeUsers = req.body
 
-    await db.read()
-    addUser.id = Math.floor(Math.random() * 10000)
-    db.data.users.push(addUser)
-    await db.write()
-    res.send({ id: addUser.id })
+    if(isValidUser(mayBeUsers)) {
+      await db.read()
+        if( await userExists(db.data.users, mayBeUsers.username)) {
+          res.sendStatus(409)
+          console.log('Användaren finns redan..')
+        } else {
+          mayBeUsers.id = await generateUserId()
+          db.data.users.push(mayBeUsers)
+          await db.write()
+          res.send(mayBeUsers)
+          console.log('post valid')
+        }
+    }
+    else {
+      res.sendStatus(400);
+      console.log('felsöker, post invalid')
+    }
   
 })
 

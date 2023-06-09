@@ -8,7 +8,7 @@ const router = express.Router();
 
 const db = getDb();
 dotenv.config()
-const secret = process.env.SECRET || "ros"
+const secret = process.env.SECRET
 
 // För användare att logga in
 router.post('/', async (req, res) => {

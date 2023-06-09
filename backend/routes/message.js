@@ -44,7 +44,7 @@ router.get('/:id', async (req, res) => {
 	
 	await db.read()
 	addNewMessage.id = Math.floor(Math.random() * 10000)
-	db.data.messages.push(addNewMessage)
+	db.data.message.push(addNewMessage)
 	await db.write()
 	res.send({ id: addNewMessage.id})
   })
@@ -55,17 +55,17 @@ router.get('/:id', async (req, res) => {
 		const id = Number(req.params.id) 
 		if(isNaN(id) || id < 0) {
 			res.sendStatus(400)
-			console.log('Delete user - Bad Request')
+			console.log('Delete message - Bad Request')
 			return
 		}
 		await db.read()
-		const index = db.data.messages.findIndex(message => message.id === id)
+		const index = db.data.message.findIndex(message => message.id === id)
 		if(index === -1) {
 			res.sendStatus(404)
 			console.log('Delete a message - Not found')
 			return
 		}
-		db.data.messages.splice(index, 1)
+		db.data.message.splice(index, 1)
 		await db.write()
 		res.sendStatus(200)
 		console.log('Now the message is deleted!')
@@ -79,18 +79,18 @@ router.get('/:id', async (req, res) => {
 	const updatedMessage = req.body
 
 	await db.read()
-	const index = db.data.messages.findIndex(message => message.id === id)
+	const index = db.data.message.findIndex(message => message.id === id)
 
 	if(index === -1) {
 		res.sendStatus(404)
 		console.log('Message not found')
 		return; 
 	}
-	db.data.messages[index] = {...db.data.messages[index], ...updatedMessage}
+	db.data.message[index] = {...db.data.message[index], ...updatedMessage}
 
 	await db.write()
 	
-	res.status(200).send(db.data.messages[index]);
+	res.status(200).send(db.data.message[index]);
 	console.log('Message updated!')
 
   })
