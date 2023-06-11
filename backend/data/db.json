@@ -29,23 +29,23 @@
   "channels": [
     {
       "id": 1,
-      "chanelName": "#koda"
+      "chanelName": "koda"
     },
     {
       "id": 2,
-      "chanelName": "#random"
+      "chanelName": "random"
     },
     {
       "id": 3,
-      "chanelName": "#grupp1"
+      "chanelName": "grupp1"
     },
     {
       "id": 4,
-      "chanelName": "#grupp2"
+      "chanelName": "grupp2"
     },
     {
       "id": 5,
-      "chanelName": "#grupp3"
+      "chanelName": "grupp3"
     }
   ],
   "messages": [

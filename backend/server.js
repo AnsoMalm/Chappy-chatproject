@@ -21,11 +21,11 @@ app.use((req, res, next) => {
 })
 
 //routes
-app.use('/users', userRouter)
-app.use('/message', messageRouter)
-app.use('/login', loginRouter)
-app.use('/secret', secretRouter)
-app.use('/channels', channelsRouter)
+app.use('/api/users', userRouter)
+app.use('/api/message', messageRouter)
+app.use('/api/login', loginRouter)
+app.use('/api/secret', secretRouter)
+app.use('/api/channels', channelsRouter)
 
 
 app.listen(port, () => {
