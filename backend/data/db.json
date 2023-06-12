@@ -17,52 +17,61 @@
     },
     {
       "username": "GladaAnn",
-      "password": "password3",
+      "password": "password4",
       "id": 4
-    },
-    {
-      "username": "VänligaAnna",
-      "password": "password3",
-      "id": 5
     }
   ],
   "channels": [
     {
       "id": 1,
-      "name": "koda"
+      "name": "#koda",
+      "public": true
     },
     {
       "id": 2,
-      "name": "random"
+      "name": "#random",
+      "public": true
     },
     {
       "id": 3,
-      "name": "grupp1"
+      "name": "#grupp1",
+      "public": false
     },
     {
       "id": 4,
-      "name": "grupp2"
+      "name": "#grupp2",
+      "public": false
     },
     {
       "id": 5,
-      "name": "grupp3"
+      "name": "#grupp3",
+      "public": false
     }
   ],
   "messages": [
     {
       "id": 1,
-      "author": "Vera",
-      "content": "Hello!"
+      "channelsid": 1,
+      "author": "VänligaVera",
+      "content": "Hej! Har en kod här: let x = 10"
     },
     {
       "id": 2,
-      "author": "Roliga Bengt",
-      "content": "YEEEY!!"
+      "channelsid": 2,
+      "author": "PratagladaPelle",
+      "content": "YEEEY!! Här är jag. Vem är ni där ute?"
     },
     {
-      "author": "Jenna",
-      "content": "Hej - läget? Jag mår bra!",
-      "id": 2741
+      "id": 3,
+      "channelsid": 2,
+      "author": "SocialaSara",
+      "content": "Hej- jag heter Sara. Vem är du?"
+    },
+    {
+      "id": 4,
+      "channelsid": 3,
+      "author": "GladaAnn",
+      "content": "Tja, vad gör ni idag?"
     }
   ]
 }

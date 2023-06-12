@@ -43,23 +43,30 @@ router.post('/', async (req, res) => {
     if(isValidUser(mayBeUsers)) {
       await db.read()
         if( await userExists(db.data.users, mayBeUsers.username)) {
-          res.sendStatus(409)
+          res.status(409).send({
+            message: "Användaren finns redan, var vänligen välj annat användarnamn eller lösenord."
+          })
           console.log('Användaren finns redan..')
         } else {
           mayBeUsers.id = await generateUserId()
           db.data.users.push(mayBeUsers)
           await db.write()
-          res.send(mayBeUsers)
+          res.status(200).send({
+            message: "Nu är du tillagd!"
+          })
           console.log('post valid')
         }
     }
     else {
-      res.sendStatus(400);
+      res.status(400).send({
+        message: "Du har glömt att fylla i användarnamn eller lösenord, var vänligen att fylla i tack. "
+      });
       console.log('felsöker, post invalid')
     }
   
 })
 
+//Ta bort en användare
   router.delete('/:id', async (req, res) => {
       if( !isValidId(req.params.id) ) {
         res.sendStatus(400)
@@ -78,7 +85,9 @@ router.post('/', async (req, res) => {
       }
       db.data.users = db.data.users.filter(user => user.id !== id)
       await db.write()
-      res.sendStatus(200)
+      res.status(200).send({
+        message: "Nu är användaren borttagen."
+      })
       console.log('Correct, now is the user deleted!')
   })
 

@@ -25,12 +25,16 @@ router.post('/', async (req, res) => {
   
 	if (!foundUser) {
 	  console.log('- felaktigt användarnamn');
-	  res.sendStatus(401);
+	  res.status(401).send({
+			message: "felaktigt användarnamn eller lösenord, Vänligen fyll igen."
+	  });
 	  return
 	}
 	if (foundUser.password !== req.body.password) {
 	  console.log('- felaktigt lösenord');
-	  res.sendStatus(401);
+	  res.status(401).send({
+			message: "felaktigt användarnamn eller lösenord, Vänligen fyll igen."
+	  });
 	  return
 	}
 	await db.write();
