@@ -2,6 +2,7 @@ import express from 'express';
 import { getDb } from '../data/database.js';
 import { isValidId } from '../utils/validator.js';
 
+
 const router = express.Router();
 
 const db = getDb();
@@ -36,26 +37,57 @@ router.get('/channels/:channelId', async (req, res) => {
 })
 	
 	
-	//Post meddelande - lägga till ett meddelande 
+	//Post meddelande - lägga till ett meddelande i en kanal 
 	router.post('/channels/:channelId', async (req, res) => {
 		console.log('/message/POST - skicka meddelande')
-		let addNewMessage = {
-			...req.body,
-			channelId: req.params.id
-		}
-		if(!addNewMessage.channelId || isNaN(addNewMessage.channelId) || addNewMessage.channelId < 0 ) {
+		const channelId = Number(req.params.channelId)
+		const usersId = req.body.userId
+		const content = req.body.content 
+	
+		if(isNaN(channelId) || channelId < 0) {
 			res.status(400).send({
-				message: "Felaktigt värde för channelId."
+				message: "Wrong value, for channelId."
 			})
-			console.log('Incorrect value for channelId.')
+			console.log('Incorrect value for channelId')
+			return; 
+		}
+		await db.read()
+
+		const channel = db.data.channels.find((channel) => channel.id === channelId)
+		if(!channel) {
+			res.status(400).send({
+				message: "Channel not found"
+			})
+			console.log("channel not found")
 			return
 		}
+		const user = db.data.users.find((user) => user.id === usersId)
+		if(!user) {
+			res.status(400).send({
+				message: "User not found", 
+			})
+			console.log("User not found")
+			return
+		}
+		const messagesForChannel = db.data.messages.filter((message) => message.channelsid === channelId)
 
-		await db.read()
-		addNewMessage.id = Math.floor(Math.random() * 10000)
-		db.data.messages.push(addNewMessage)
+		const generateUniqueId = () => {
+			const maxId = messagesForChannel.reduce((max, message) => Math.max(max, message.id), 0)
+			return maxId + 1
+		}
+		let newMessage = {
+			id: generateUniqueId(), 
+			channelsid: channelId, 
+			author: user.username, 
+			content: content,
+			timestamp: new Date().toLocaleString() 
+		}
+
+		db.data.messages.push(newMessage)
 		await db.write()
-		res.send({ id: addNewMessage.id})
+
+		res.send({ id: newMessage.id})
+
 	})
 	
 	//Ta bort ett meddelande 
@@ -98,7 +130,9 @@ router.get('/channels/:channelId', async (req, res) => {
 		const index = db.data.messages.findIndex(message => message.id === id)
 		
 		if(index === -1) {
-			res.sendStatus(404)
+			res.status(404).send({
+				message: "Message not found"
+			})
 			console.log('Message not found')
 			return; 
 	}
@@ -111,24 +145,3 @@ router.get('/channels/:channelId', async (req, res) => {
 	
 })
 export default router
-
-//router.get('/:id, async (req, res) => {
-//	console.log('GET/ message id...');
-// 	if (!isValidId(req.params.id)) {
-// 	  res.sendStatus(400);
-// 	  console.log('Incorrent value, must be a number for Id..');
-// 	  return;
-// 	}
-// 	let id = Number(req.params.id);
-  
-// 	await db.read();
-// 	let mayBeMessage = db.data.messages.find(message => message.id === id);
-// 	if (!mayBeMessage) {
-// 	  res.sendStatus(404);
-// 	  console.log('Could not found the correct id to that text-message.. ');
-// 	  return;
-// 	}
-// 	await db.write()
-// 	res.status(200).send(mayBeMessage);
-// 	console.log('Here is the result - your message..');
-//   });

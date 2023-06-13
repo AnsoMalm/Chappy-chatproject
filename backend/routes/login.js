@@ -24,14 +24,14 @@ router.post('/', async (req, res) => {
 	console.log('Users i databas ', db.data)
   
 	if (!foundUser) {
-	  console.log('- felaktigt användarnamn');
+	  console.log('Det är ett felaktigt användarnamn');
 	  res.status(401).send({
-			message: "felaktigt användarnamn eller lösenord, Vänligen fyll igen."
+			message: "felaktigt användarnamn eller lösenord, Vänligen fyll i igen."
 	  });
 	  return
 	}
 	if (foundUser.password !== req.body.password) {
-	  console.log('- felaktigt lösenord');
+	  console.log('Det är ett felaktigt lösenord');
 	  res.status(401).send({
 			message: "felaktigt användarnamn eller lösenord, Vänligen fyll igen."
 	  });

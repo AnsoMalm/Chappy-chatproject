@@ -1,9 +1,9 @@
 {
   "users": [
     {
-      "id": 1,
-      "username": "VänligaVera",
-      "password": "password1"
+      "username": "Vera",
+      "password": "blomma7",
+      "id": 1
     },
     {
       "id": 2,
@@ -16,9 +16,9 @@
       "password": "password3"
     },
     {
-      "username": "GladaAnn",
-      "password": "password4",
-      "id": 4
+      "id": 4,
+      "username": "TrevligaTommy",
+      "password": "password4"
     }
   ],
   "channels": [
@@ -53,25 +53,64 @@
       "id": 1,
       "channelsid": 1,
       "author": "VänligaVera",
-      "content": "Hej! Har en kod här: let x = 10"
+      "content": "Hej - Jag vill ge dig en ny kod: let i = 10",
+      "timestamp": "2023-06-13 13:02:59"
+    },
+    {
+      "id": 2,
+      "channelsid": 1,
+      "author": "PratagladPelle",
+      "content": "Tja! Kul kod - min kod är: let y = 2!",
+      "timestamp": "2023-06-13 13:04:10"
+    },
+    {
+      "id": 1,
+      "channelsid": 2,
+      "author": "SocialaSara",
+      "content": "hej! Vad gör ni idag?",
+      "timestamp": "2023-06-13 13:05:13"
     },
     {
       "id": 2,
       "channelsid": 2,
-      "author": "PratagladaPelle",
-      "content": "YEEEY!! Här är jag. Vem är ni där ute?"
+      "author": "TrevligaTommy",
+      "content": "Tjena SocialaSara! Inget speciellt, vad gör du?",
+      "timestamp": "2023-06-13 13:06:22"
     },
     {
-      "id": 3,
-      "channelsid": 2,
-      "author": "SocialaSara",
-      "content": "Hej- jag heter Sara. Vem är du?"
-    },
-    {
-      "id": 4,
+      "id": 1,
       "channelsid": 3,
-      "author": "GladaAnn",
-      "content": "Tja, vad gör ni idag?"
+      "author": "GladaGustav",
+      "content": "Hej! Nån som har tid att spela counterstrike idag? Kan när som helst!",
+      "timestamp": "2023-06-13 13:07:27"
+    },
+    {
+      "id": 2,
+      "channelsid": 3,
+      "author": "VänligaVera",
+      "content": "Tja! Jag kan spela CS - ska vi säga kl. 14.00?",
+      "timestamp": "2023-06-13 13:08:01"
+    },
+    {
+      "id": 1,
+      "channelsid": 4,
+      "author": "TrevligaTommy",
+      "content": "Hej! Nån som har en webcam över som kan låna ut?",
+      "timestamp": "2023-06-13 13:10:01"
+    },
+    {
+      "id": 1,
+      "channelsid": 5,
+      "author": "PratagladPelle",
+      "content": "Nån som vill ses på en fika nån dag?",
+      "timestamp": "2023-06-13 13:10:54"
+    },
+    {
+      "id": 2,
+      "channelsid": 5,
+      "author": "SocialaSara",
+      "content": "Ja gärna, när ska vi ses?",
+      "timestamp": "2023-06-13 13:23:56"
     }
   ]
 }

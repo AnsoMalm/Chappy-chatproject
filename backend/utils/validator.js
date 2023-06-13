@@ -35,4 +35,10 @@ async function userExists(users, username) {
 
 }
 
-export { isValidUser, isValidId, userExists  }
+function hasId(object) {
+	let idIsValid = (typeof object.id) === 'number'
+	idIsValid = idIsValid && object.id >= 0
+	return idIsValid
+}
+
+export { isValidUser, isValidId, userExists, hasId  }
