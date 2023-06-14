@@ -29,7 +29,7 @@ app.use('/api', express.json() )
 app.use('/api/users', userRouter)
 app.use('/api/messages', messageRouter)
 app.use('/api/login', loginRouter)
-app.use('/api/secret', secretRouter)
+// app.use('/api/secret', secretRouter)
 app.use('/api/channels', channelsRouter)
 
 app.get('*', (req, res) => {

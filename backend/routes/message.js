@@ -1,7 +1,5 @@
 import express from 'express';
 import { getDb } from '../data/database.js';
-import { isValidId } from '../utils/validator.js';
-
 
 const router = express.Router();
 
@@ -15,7 +13,7 @@ router.get('/', async (req, res) => {
 	res.send(allMessages);
   });
 
-  //Hämta specifikt id från ett visst meddelande 
+  //Hämta meddelande från en kanal
 router.get('/channels/:channelId', async (req, res) => {
 	console.log('GET/Messages/channel/:channelId..');
 	
