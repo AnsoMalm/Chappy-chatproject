@@ -6,7 +6,6 @@ import { fileURLToPath } from 'url'
 import userRouter from './routes/users.js'
 import messageRouter from './routes/message.js'
 import loginRouter from './routes/login.js'
-import secretRouter from './routes/secret.js'
 import channelsRouter from './routes/channels.js'
 
 const app = express()
@@ -29,7 +28,6 @@ app.use('/api', express.json() )
 app.use('/api/users', userRouter)
 app.use('/api/messages', messageRouter)
 app.use('/api/login', loginRouter)
-// app.use('/api/secret', secretRouter)
 app.use('/api/channels', channelsRouter)
 
 app.get('*', (req, res) => {
