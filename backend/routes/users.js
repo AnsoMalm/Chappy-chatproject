@@ -19,8 +19,10 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   console.log('GET /users/:id');
   if (!isValidId(req.params.id)) {
-    res.sendStatus(400);
-    console.log('Incorrent value, must be a number for Id..');
+    res.status(400).send({
+      message: "Incorrect value - must be a number for id, try again!"
+    })
+    console.log('Incorrect value, must be a number for Id..');
     return;
   }
   let id = Number(req.params.id);
@@ -28,8 +30,10 @@ router.get('/:id', async (req, res) => {
   await db.read();
   let mayBeUsers = db.data.users.find(user => user.id === id);
   if (!mayBeUsers) {
-    res.sendStatus(404);
-    console.log('Could not found the correct id in the list.. ');
+    res.status(404).send({
+      message: "Could not found correct id in the list."
+    })
+    console.log('Could not found correct id in the list.. ');
     return;
   }
   res.status(200).send(mayBeUsers);
@@ -54,14 +58,14 @@ router.post('/', async (req, res) => {
           res.status(200).send({
             message: "Nu är du tillagd!"
           })
-          console.log('post valid')
+          console.log('post is valid')
         }
     }
     else {
       res.status(400).send({
         message: "Du har glömt att fylla i användarnamn eller lösenord, var vänligen att fylla i tack. "
       });
-      console.log('felsöker, post invalid')
+      console.log('felsöker, post is invalid')
     }
   
 })
@@ -69,7 +73,9 @@ router.post('/', async (req, res) => {
 //Ta bort en användare
   router.delete('/:id', async (req, res) => {
       if( !isValidId(req.params.id) ) {
-        res.sendStatus(400)
+        res.status(400).send({
+          message: "Try to delete user but it was incorrect value."
+        })
         console.log('Try to delete user, incorrect value...')
         return
       }

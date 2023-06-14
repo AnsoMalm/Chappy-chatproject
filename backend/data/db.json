@@ -1,9 +1,9 @@
 {
   "users": [
     {
-      "username": "Vera",
-      "password": "blomma7",
-      "id": 1
+      "id": 1,
+      "username": "VänligaVera",
+      "password": "password1"
     },
     {
       "id": 2,
@@ -19,6 +19,11 @@
       "id": 4,
       "username": "TrevligaTommy",
       "password": "password4"
+    },
+    {
+      "id": 5, 
+      "username": "GladaGustav",
+      "password": "password5"
     }
   ],
   "channels": [

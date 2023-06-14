@@ -103,7 +103,6 @@ router.get('/channels/:channelId', async (req, res) => {
 		const index = db.data.messages.findIndex(message => message.id === id)
 		if(index === -1) {
 			res.status(404).send({
-				
 				message: "The message Not found."
 			})
 			console.log('Delete a message - Not found')
