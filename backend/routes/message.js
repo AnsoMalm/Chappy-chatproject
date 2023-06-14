@@ -7,7 +7,7 @@ const db = getDb();
 
 // Hämta alla meddelande 
 router.get('/', async (req, res) => {
-	console.log('GET all users: ');
+	console.log('GET all messages: ');
 	await db.read();
 	let allMessages = db.data.messages;
 	res.send(allMessages);
