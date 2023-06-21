@@ -15,5 +15,22 @@ async function generateUserId() {
    
 }
 
+async function generateUniqueId() {
+   await db.read()
+   console.log('Messages:', db.data.messages)
+   if (db.data.messages.length > 0) {
+       const highestMessageId = Number(db.data.messages.reduce((maxId, currentMessages) => {
+           console.log('maxId:', maxId, 'currentMessages.id:', currentMessages.id)
+           return Math.max(maxId, currentMessages.id)
+       }, 0))
+       
+       console.log('Generate: ', highestMessageId)
+       
+       return highestMessageId + 1
+   } else {
+       return 1
+   }
+}
 
-export {generateUserId}
+
+export {generateUserId, generateUniqueId}

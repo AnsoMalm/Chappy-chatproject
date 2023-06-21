@@ -3,27 +3,45 @@
     {
       "id": 1,
       "username": "VänligaVera",
-      "password": "password1"
+      "password": "password1",
+      "channels": [
+        3,
+        4
+      ]
     },
     {
       "id": 2,
       "username": "PratagladPelle",
-      "password": "password2"
+      "password": "password2",
+      "channels": [
+        4,
+        5
+      ]
     },
     {
       "id": 3,
       "username": "SocialaSara",
-      "password": "password3"
+      "password": "password3",
+      "channels": [
+        3,
+        5
+      ]
     },
     {
       "id": 4,
       "username": "TrevligaTommy",
-      "password": "password4"
+      "password": "password4",
+      "channels": [
+        4
+      ]
     },
     {
       "id": 5,
       "username": "GladaGustav",
-      "password": "password5"
+      "password": "password5",
+      "channels": [
+        5
+      ]
     }
   ],
   "channels": [
@@ -116,6 +134,13 @@
       "author": "SocialaSara",
       "content": "Ja gärna, när ska vi ses?",
       "timestamp": "2023-06-14 13:06:07"
+    },
+    {
+      "id": {},
+      "channelId": 4,
+      "userId": 2,
+      "content": "Hellu!",
+      "timestamp": "2023-06-21 23:51:41"
     }
   ]
 }
