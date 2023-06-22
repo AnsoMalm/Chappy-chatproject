@@ -41,4 +41,14 @@ function hasId(object) {
 	return idIsValid
 }
 
-export { isValidUser, isValidId, userExists, hasId  }
+function findMaxIdMessage(list) {
+    let maxId = 0
+    for (const item of list) {
+        if (item.id && item.id > maxId) {
+            maxId = item.id
+        }
+    }
+    return maxId
+}
+
+export { isValidUser, isValidId, userExists, hasId, findMaxIdMessage }

@@ -11,6 +11,7 @@ import channelsRouter from './routes/channels.js'
 const app = express()
 dotenv.config()
 const port = process.env.PORT || 5050
+console.log('Secret file', process.env.SECRET)
 
 app.use((req, res, next) => {
 	console.log(`${req.method} ${req.url},`, req.body)

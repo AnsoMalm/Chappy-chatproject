@@ -2,8 +2,8 @@ import express from 'express'
 import { getDb } from '../data/database.js'
 import { isValidId } from '../utils/validator.js';
 import jwt from 'jsonwebtoken';
-import { generateUniqueId } from '../utils/generateId.js';
-
+// import { generateUniqueId } from '../utils/generateId.js';
+import { findMaxIdMessage } from '../utils/validator.js';
 
 const router = express.Router(); 
 const db = getDb()
@@ -44,7 +44,7 @@ router.get('/', async (req, res) => {
 
 // })
 
-const authenticateUser = async (req, res, next) => {
+ const authenticateUser = async (req, res, next) => {
     let authHeader = req.headers.authorization
     if(!authHeader) {
         res.status(401).send({
@@ -160,10 +160,11 @@ router.post('/:channelId/messages', authenticateUser, async (req, res) => {
         const channelId = Number(req.params.channelId)
         const { content } = req.body;
 
+        const messageId = findMaxIdMessage(db.data.messages) + 1
         // Skapa det nya meddelandet
         const newMessage = {
-            id: generateUniqueId(),
-            channelId: channelId,
+            id: messageId,
+            channelsid: channelId,
             userId: user.id,
             content: content, 
             timestamp: new Date().toLocaleString()
