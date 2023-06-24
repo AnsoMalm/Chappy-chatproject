@@ -5,9 +5,10 @@ import jwt from 'jsonwebtoken';
 // import { generateUniqueId } from '../utils/generateId.js';
 import { findMaxIdMessage } from '../utils/validator.js';
 
+
 const router = express.Router(); 
-const db = getDb()
-console.log('Datan från databasen', db.data)
+const db = await getDb()
+console.log('Datan från databasen', db.channels);
 const secret = process.env.SECRET
 
 //Hämta alla kanaler 
@@ -44,101 +45,72 @@ router.get('/', async (req, res) => {
 
 // })
 
- const authenticateUser = async (req, res, next) => {
-    let authHeader = req.headers.authorization
-    if(!authHeader) {
-        res.status(401).send({
-            message: "You must have authenticated to view this chat-channel."
-        })
-        return
-    }
-    let token = authHeader.replace('Bearer: ', '')
-    try {
-        let decoded = jwt.verify(token, secret)
-        console.log('Decoded JWT: ', decoded)
-        let id = decoded.userId
-        let users = db.data.users;
-        let user = users.find(u => u.id === id)
-        if(!user) {
-            res.status(401).send({
-                message: "jwt - User not found."
-            })
-            return
-        }
-        
-        let channelId = Number(req.params.channelId)
-        if(!user.channels.includes(channelId)) {
-            res.status(403).send({
-                message: "Forbidden, You dont have access to this channel."
-            })
-            return
-        }
+const authenticateUser = async (req, res, next) => {
+   let authHeader = req.headers.authorization
+   if(!authHeader) {
+       res.status(401).send({
+           message: "You must have authenticated to view this chat-channel."
+       })
+       return
+   }
+   let token = authHeader.replace('Bearer: ', '')
+   try {
+       let decoded = jwt.verify(token, secret)
+       console.log('Decoded JWT: ', decoded)
+       let id = decoded.userId
+       let users = db.data.users;
+       let user = users.find(u => u.id === id)
+       if(!user) {
+           res.status(401).send({
+               message: "jwt - User not found."
+           })
+           return
+       }
+       
+       let channelId = Number(req.params.channelId)
+       if(!user.channels.includes(channelId)) {
+           res.status(403).send({
+               message: "Forbidden, You dont have access to this channel."
+           })
+           return
+       }
 
-        req.user = user;
+       req.user = user;
+       next();
+   } catch(error) {
+       console.log('Authentication error' + error.message)
+       res.status(401).send({
+           message: "Unauthorized - please try again later. "
+       })
+   }
+}
+async function checkChannelAccess(req, res, next) {
+    await db.read()
+    const channelId = Number(req.params.channelId);
+    console.log('Begärt kanal-ID:', channelId);
+    const channel = db.data.channels.find(c => c.id === channelId);
+    console.log('Hittad kanal:', channel)
+        if (!channel) {
+        return res.status(404).send({ message: "Channel not found." });
+        }
+    
+        if (channel.public) {
         next();
-    } catch(error) {
-        console.log('Authentication error' + error.message)
-        res.status(401).send({
-            message: "Unauthorized - please try again later. "
-        })
+        } else {
+            authenticateUser(req, res, next)   
     }
 }
-// router.get('/:channelId', authenticateUser, async (req, res) => {
-//     // Användaren är nu tillgänglig som req.user tack vare middlewaren
-//     const user = req.user;
-//     const channelId = Number(req.params.channelId)
-
-//     // Hämta alla meddelanden för den här kanalen
-//     const messages = db.data.messages.filter(message => message.channelId === channelId);
-
-//     // Skicka tillbaka meddelandena
-//     res.status(200).send(messages);
-// })
-
-
-
-
-
 
 
 //Kolla så att man har rätt tillstånd för att kunna komma in på en låst kanal. 
-router.get('/:channelId', async (req, res) => {
+router.get('/:channelId', checkChannelAccess, async (req, res) => {
 	await db.read()
 	console.log('Starting GET request....')
-	let authHeader = req.headers.authorization
-	if(!authHeader) {
-		res.status(401).send({
-			message: "You must have authenticated to view this chat-channel."
-		})
-		return
-	}
-	let token = authHeader.replace('Bearer: ', '')
-	try {
-		let decoded = jwt.verify(token, secret)
-		console.log('Decoded JWT: ', decoded)
-		let id = decoded.userId
-		let users = db.data.users; 
-		console.log('Users från database', users)
-		let user = users.find(u => u.id === id)
-		console.log('Found users ', user)
-		if(!user) {
-			console.log('User can not be found..')
-			res.status(401).send({
-				message: "jwt - User not found."
-			})
-			return
-		}
-		
+    console.log('Databasdata:', db.data);
+	
 		let channelId = Number(req.params.channelId)
 		console.log('Channel ID', channelId)
-		if(!user.channels.includes(channelId)) {
-			res.status(403).send({
-				message: "Forbidden, You dont have access to this channel."
-			})
-			return
-		}
-		console.log(`User "${user.username}" has access to the chat-channel. `)
-		
+
 		let messages = db.data.messages;
 		let channelMessages = messages.filter(m => m.channelsid === channelId)
 		
@@ -146,12 +118,6 @@ router.get('/:channelId', async (req, res) => {
 			message: "Now you have access to chat-channel, welcome, your are authenticated. ",
 			messages: channelMessages
 		})
-	} catch(error) {
-		console.log('GET / channel-messages error' + error.message)
-		res.status(401).send({
-			message: "Unauthorized - please try again later. "
-		})
-	}
 })
 
 router.post('/:channelId/messages', authenticateUser, async (req, res) => {
@@ -181,5 +147,51 @@ router.post('/:channelId/messages', authenticateUser, async (req, res) => {
         res.status(500).send({ message: 'Server error' });
     }
 })
+
+router.delete('/:channelId/messages/:messageId', authenticateUser, async (req, res) => {
+    const messageId = parseInt(req.params.messageId);
+    const user = req.user;
+
+    const messageIndex = db.data.messages.findIndex(m => m.id === messageId && m.userId === user.id);
+
+    if (messageIndex === -1) {
+        res.status(404).send({ message: "Message not found or you're not the author." });
+        return;
+    }
+
+    db.data.messages.splice(messageIndex, 1);
+    await db.write();
+
+    res.status(200).send({ message: "Message deleted successfully!" });
+});
+
+
+router.put('/:channelId/messages/:messageId', checkChannelAccess,async (req, res) => {
+        try {
+          const messageId = parseInt(req.params.messageId);
+          const user = req.user;
+          const { content } = req.body;
+      
+          // Läs in befintliga meddelanden från databasen
+          await db.read();
+          const messages = db.data.messages;
+      
+          // Hitta det meddelande som ska uppdateras
+          const messageIndex = messages.findIndex((m) => m && m.id === messageId && m.userId === user.id);
+          if (messageIndex === -1) {
+            res.status(404).send({ message: "Message not found or you're not the author." });
+            return;
+          }
+      
+          // Uppdatera meddelandet
+          messages[messageIndex].content = content;
+          await db.write();
+      
+          res.status(200).send({ message: "Message updated successfully!" });
+        } catch (error) {
+          console.error('Error:', error);
+          res.status(500).send({ message: 'Server error' });
+        }
+      });
 
 export default router

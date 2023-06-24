@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken'
 
 const router = express.Router();
 
-const db = getDb();
+const db = await getDb();
 dotenv.config()
 const secret = process.env.SECRET
 
