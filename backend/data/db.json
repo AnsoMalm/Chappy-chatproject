@@ -106,6 +106,13 @@
       "author": "SocialaSara",
       "content": "Ja gärna, när ska vi ses?",
       "timestamp": "2023-06-14 13:06:07"
+    },
+    {
+      "id": 4,
+      "channelsid": 5,
+      "userId": 3,
+      "content": "Hej! Kan vi ses på cs kl. 21.00?",
+      "timestamp": "2023-06-25 12:38:15"
     }
   ]
 }

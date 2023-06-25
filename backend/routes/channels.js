@@ -48,7 +48,7 @@ router.get('/', async (req, res) => {
 const authenticateUser = async (req, res, next) => {
    let authHeader = req.headers.authorization
    if(!authHeader) {
-       res.status(401).send({
+        res.status(401).send({
            message: "You must have authenticated to view this chat-channel."
        })
        return
@@ -126,6 +126,14 @@ router.post('/:channelId/messages', authenticateUser, async (req, res) => {
         const channelId = Number(req.params.channelId)
         const { content } = req.body;
 
+        const channel = db.data.channels.find(c => c.id === channelId)
+        if(!(channel.public && (channelId === 1 || channelId === 2 )) && (!user || (user && !user.channels.includes(channelId)))) {
+            res.status(401).send({
+                message: "You need to be logged in to post a message."
+            })
+            return; 
+        }
+
         const messageId = findMaxIdMessage(db.data.messages) + 1
         // Skapa det nya meddelandet
         const newMessage = {
@@ -167,30 +175,55 @@ router.delete('/:channelId/messages/:messageId', authenticateUser, async (req, r
 
 
 router.put('/:channelId/messages/:messageId', checkChannelAccess,async (req, res) => {
-        try {
-          const messageId = parseInt(req.params.messageId);
-          const user = req.user;
-          const { content } = req.body;
-      
-          // Läs in befintliga meddelanden från databasen
-          await db.read();
-          const messages = db.data.messages;
-      
-          // Hitta det meddelande som ska uppdateras
-          const messageIndex = messages.findIndex((m) => m && m.id === messageId && m.userId === user.id);
-          if (messageIndex === -1) {
-            res.status(404).send({ message: "Message not found or you're not the author." });
+    try {
+        // Läs in befintliga meddelanden från databasen
+        const messageId = parseInt(req.params.messageId);
+        const user = req.user;
+        const { content } = req.body;
+
+        const channelId = Number(req.params.channelId)
+        const channel = db.data.channels.find(c => c.id === channelId)
+        if (!(channel.public && (channelId === 1 || channelId === 2)) && (!user || !user.channels.includes(channelId))) {
+            res.status(401).send({
+                message: "You need to be inlogged in to edit a message."
+            })
             return;
-          }
-      
-          // Uppdatera meddelandet
-          messages[messageIndex].content = content;
-          await db.write();
-      
-          res.status(200).send({ message: "Message updated successfully!" });
+        }
+        await db.read();
+        const messages = db.data.messages;
+        
+        // Hitta det meddelande som ska uppdateras
+        const message = messages.find((m) => m && m.id === messageId)
+            if(!message) {
+                res.status(404).send({
+                    message: "Message not found."
+                })
+                return;
+            }
+            if(message.author && message.author !== user.username) {
+                res.status(403).send({
+                    message: "You're not the author of this message. "
+                })
+                return
+            }
+            if(message.userId && message.userId !== user.id) {
+                res.status(403).send({
+                    message: "You're not the author of this message."
+                })
+                return; 
+            }
+            //uppdatera meddelandet 
+            message.content = content; 
+            await db.write()
+
+            res.status(200).send({
+                message: "Message updated successfully!"
+            })
         } catch (error) {
-          console.error('Error:', error);
-          res.status(500).send({ message: 'Server error' });
+            console.log('Error', error)
+            res.status(500).send({
+                message: "Server error.."
+            })
         }
       });
 
