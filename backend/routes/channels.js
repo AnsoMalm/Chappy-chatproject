@@ -17,36 +17,10 @@ router.get('/', async (req, res) => {
 	res.send(db.data.channels)
 })
 
-// //GET - Få ett meddelande i rätt kanal 
-// router.get('/:id', async (req, res) => {
-// 	console.log('GET /channels: ID: ')
-// 	if(!isValidId(req.params.id)) {
-// 		res.status(400).send({
-// 			message: "Incorrect value, is must be a number for channelid."
-// 		})
-// 		console.log('Incorrect value, is must be a number for id..')
-// 		return
-// 	}
-// 	let id = Number(req.params.id)
-// 	await db.read()
-// 	let mayBeChannel = db.data.channels.find(channel => channel.id === id); 
-// 	if(!mayBeChannel) {
-// 		res.status(404).send({
-// 			message: "Could not found the correct id to the channel."
-// 		})
-// 		console.log('Could not found the correct id to the channel..')
-// 		return
-// 	}
-// 	await db.write()
-// 	res.status(200).send({
-// 		message: "The right channel - congrats!"
-// 	})
-// 	console.log('Correct channel id - great!')
-
-// })
-
 const authenticateUser = async (req, res, next) => {    
     //Detta är nytt som jag ska testa ikväll. 
+    await db.read()
+    console.log('Innehåller data', db.data)
     let channelId = Number(req.params.channelId)
     const channel = db.data.channels.find(c => c.id === channelId);
  
@@ -63,9 +37,10 @@ const authenticateUser = async (req, res, next) => {
    let token = authHeader.replace('Bearer: ', '')
    try {
        let decoded = jwt.verify(token, secret)
-       console.log('Decoded JWT: ', decoded)
+    //    console.log('Decoded JWT: ', decoded)
        let id = decoded.userId
        let users = db.data.users;
+       console.log('Users in database:', users)
        let user = users.find(u => u.id === id)
        if(!user) {
            res.status(401).send({
@@ -129,6 +104,8 @@ router.get('/:channelId', checkChannelAccess, async (req, res) => {
 
 router.post('/:channelId/messages', authenticateUser, async (req, res) => {
     try {
+        await db.read(); 
+        console.log('Den data i post: ', db.data)
         const user = req.user;
         const channelId = Number(req.params.channelId)
         const { content } = req.body;
@@ -142,11 +119,13 @@ router.post('/:channelId/messages', authenticateUser, async (req, res) => {
         }
 
         const messageId = findMaxIdMessage(db.data.messages) + 1
+        const userId = user ? user.id : 'guest'; 
+  
         // Skapa det nya meddelandet
         const newMessage = {
             id: messageId,
             channelsid: channelId,
-            userId: user.id,
+            userId: userId,
             content: content, 
             timestamp: new Date().toLocaleString()
         }
