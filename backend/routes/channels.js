@@ -45,7 +45,14 @@ router.get('/', async (req, res) => {
 
 // })
 
-const authenticateUser = async (req, res, next) => {
+const authenticateUser = async (req, res, next) => {    
+    //Detta är nytt som jag ska testa ikväll. 
+    let channelId = Number(req.params.channelId)
+    const channel = db.data.channels.find(c => c.id === channelId);
+ 
+    if (channel && channel.public) {
+        return next();
+    }
    let authHeader = req.headers.authorization
    if(!authHeader) {
         res.status(401).send({
