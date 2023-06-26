@@ -31,18 +31,17 @@ _____
 
 
 ## API-request
-|Name         | Method   | Endpoints                          | Description                          |
-|:------------|:---------|:-----------------------------------|:-------------------------------------|
-|**Users**    | GET      | /api/users			              | get all users                        |
-|             | GET      | /api/users/:id	                  | get a specifik users with id         |
-|             | POST     | /api/users/	                      | create new user                      |
-|             | DELETE   | /api/users/:id	                  | delete users                         |
-|             | PUT      | /api/users/:id	                  | change users                         |
-|**Channels** | GET      | /api/channels	                  | get all channels                     |
-|             | GET      | /api/channels/:id	              | get a specifik channels with id      |
-|**Messages** | GET      | /api/messages	                  | get all messages                     |
-|             | GET      | /api/messages/channels/:channelId  | get specifik messages from a channel |
-|             | POST     | /api/messages/channels/:channelId  | create message in a channel          |
-|             | DELETE   | /api/messages/:id	              | delete message                       |
-|             | PUT      | /api/messages/:id	              | change message                       |
-|**Login**    | POST     | /api/login	                      | send login request                   |
+|Name         | Method   | Endpoints                                     | Description                          |
+|:------------|:---------|:----------------------------------------------|:-------------------------------------|
+|**Users**    | GET      | /api/users			                         | get all users                        |
+|             | GET      | /api/users/:id	                             | get a specifik users with id         |
+|             | POST     | /api/users/	                                 | create new user                      |
+|             | DELETE   | /api/users/:id	                             | delete users                         |
+|             | PUT      | /api/users/:id	                             | change users                         |
+|**Messages** | GET      | /api/messages	                             | get all messages                     |
+|**Channels** | GET      | /api/channels	                             | get all channels                     |
+|             | GET      | /api/channels/:channelId                      | get specifik messages from a channel |
+|             | POST     | /api/channels/:channelId/messages             | create message in a channel          |
+|             | DELETE   | /api/channels/:channelID/messages/:messagesId | delete message                       |
+|             | PUT      | /api/channeld/:channelId/messages/:messagesId | change message                       |
+|**Login**    | POST     | /api/login	                                 | send login request                   |

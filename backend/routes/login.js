@@ -21,8 +21,6 @@ router.post('/', async (req, res) => {
 	const users = db.data.users;
   
 	let foundUser = users.find(user => user.username === req.body.username);
-	console.log('Users i databas ', db.data)
-  
 	if (!foundUser) {
 	  console.log('Det är ett felaktigt användarnamn');
 	  res.status(401).send({

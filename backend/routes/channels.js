@@ -1,14 +1,11 @@
 import express from 'express'
 import { getDb } from '../data/database.js'
-import { isValidId } from '../utils/validator.js';
 import jwt from 'jsonwebtoken';
-// import { generateUniqueId } from '../utils/generateId.js';
 import { findMaxIdMessage } from '../utils/validator.js';
 
 
 const router = express.Router(); 
 const db = await getDb()
-console.log('Datan från databasen', db.channels);
 const secret = process.env.SECRET
 
 //Hämta alla kanaler 
@@ -18,9 +15,7 @@ router.get('/', async (req, res) => {
 })
 
 const authenticateUser = async (req, res, next) => {    
-    //Detta är nytt som jag ska testa ikväll. 
     await db.read()
-    console.log('Innehåller data', db.data)
     let channelId = Number(req.params.channelId)
     const channel = db.data.channels.find(c => c.id === channelId);
  
@@ -37,10 +32,8 @@ const authenticateUser = async (req, res, next) => {
    let token = authHeader.replace('Bearer: ', '')
    try {
        let decoded = jwt.verify(token, secret)
-    //    console.log('Decoded JWT: ', decoded)
        let id = decoded.userId
        let users = db.data.users;
-       console.log('Users in database:', users)
        let user = users.find(u => u.id === id)
        if(!user) {
            res.status(401).send({
@@ -69,11 +62,11 @@ const authenticateUser = async (req, res, next) => {
 async function checkChannelAccess(req, res, next) {
     await db.read()
     const channelId = Number(req.params.channelId);
-    console.log('Begärt kanal-ID:', channelId);
     const channel = db.data.channels.find(c => c.id === channelId);
-    console.log('Hittad kanal:', channel)
         if (!channel) {
-        return res.status(404).send({ message: "Channel not found." });
+        return res.status(404).send({ 
+            message: "Channel not found." 
+        });
         }
     
         if (channel.public) {
@@ -87,9 +80,7 @@ async function checkChannelAccess(req, res, next) {
 //Kolla så att man har rätt tillstånd för att kunna komma in på en låst kanal. 
 router.get('/:channelId', checkChannelAccess, async (req, res) => {
 	await db.read()
-	console.log('Starting GET request....')
-    console.log('Databasdata:', db.data);
-	
+
 		let channelId = Number(req.params.channelId)
 		console.log('Channel ID', channelId)
 
@@ -105,7 +96,6 @@ router.get('/:channelId', checkChannelAccess, async (req, res) => {
 router.post('/:channelId/messages', authenticateUser, async (req, res) => {
     try {
         await db.read(); 
-        console.log('Den data i post: ', db.data)
         const user = req.user;
         const channelId = Number(req.params.channelId)
         const { content } = req.body;
@@ -138,7 +128,9 @@ router.post('/:channelId/messages', authenticateUser, async (req, res) => {
         res.status(200).send(newMessage);
     } catch (error) {
         console.error('Error:', error);
-        res.status(500).send({ message: 'Server error' });
+        res.status(500).send({ 
+            message: 'Server error' 
+        });
     }
 })
 
@@ -149,14 +141,18 @@ router.delete('/:channelId/messages/:messageId', authenticateUser, async (req, r
     const messageIndex = db.data.messages.findIndex(m => m.id === messageId && m.userId === user.id);
 
     if (messageIndex === -1) {
-        res.status(404).send({ message: "Message not found or you're not the author." });
+        res.status(404).send({ 
+            message: "Message not found or you're not the author." 
+        });
         return;
     }
 
     db.data.messages.splice(messageIndex, 1);
     await db.write();
 
-    res.status(200).send({ message: "Message deleted successfully!" });
+    res.status(200).send({ 
+        message: "Message deleted successfully!" 
+    });
 });
 
 
